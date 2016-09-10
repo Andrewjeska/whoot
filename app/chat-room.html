@@ -1,0 +1,67 @@
+<style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    html, input {
+      font-family:
+        "HelveticaNeue-Light",
+        "Helvetica Neue Light",
+        "Helvetica Neue",
+        Helvetica,
+        Arial,
+        "Lucida Grande",
+        sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    ul {
+      list-style: none;
+      word-wrap: break-word;
+    }
+
+    /* Pages */
+
+    .pages {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+    }
+
+    .page {
+      height: 100%;
+      position: absolute;
+      width: 100%;
+    }
+
+    /* Login Page */
+
+    .login.page {
+      background-color: #000;
+</style>
+
+<body>
+  <ul class="pages">
+    <li class="chat page">
+      <div class="chatArea">
+        <ul class="messages"></ul>
+      </div>
+      <input class="inputMessage" placeholder="Type here..."/>
+    </li>
+  </ul>
+
+  <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/chat-room.js"></script>
+</body>
