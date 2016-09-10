@@ -6,9 +6,9 @@ var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 
-var gameStates = {};
+var roomStates = {};
 var port = process.env.PORT || 3000;
-var USERNAMES = ["Joe", "Nick", "Steve", "Bill", "Mary", "Greg"]
+var USERNAMES = ["Joe", "Nick", "Steve", "Bill", "Mary", "Greg", "Harambe"]
 
 server.listen(port, function () {
     console.log('Server listening at port %d', port);
@@ -24,15 +24,16 @@ app.get("/", function (req,res){
 });
 
 app.get("/[a-z]{4}/", function(req,res,next){
-
     var room = get_url(req.url);
-    res.send("Accessing chat room with id: " + room)
+    res.sendFile("index.html",{ root: __dirname + "/../app" });
 });
 
 var numUsers=0;
+var currentIds=[]
 
 io.on('connection', function (socket) {
 
+    var id;
     var username;
     var addedUser = false;
 
@@ -47,9 +48,15 @@ io.on('connection', function (socket) {
     });
 
     // when the client emits 'add user', this listens and executes
-    socket.on('add user', function () {
-
-        username = generate_username();
+    socket.on('add user', function (room) {
+        if(numUsers >= USERNAMES.length) {
+            socket.emit('denied', 'Room is full.');
+            return;
+        }
+        socket.join(room);
+        id = nextId();
+        currentIds.push(id);
+        username = USERNAMES[id];
         if (addedUser) return;
 
         // we store the username in the socket session for this client
@@ -85,7 +92,7 @@ io.on('connection', function (socket) {
     socket.on('disconnect', function () {
         if (addedUser) {
             --numUsers;
-
+            currentIds.splice(currentIds.indexOf(id), 1);
             // echo globally that this client has left
             socket.broadcast.emit('user left', {
                 username: username,
@@ -95,12 +102,17 @@ io.on('connection', function (socket) {
     });
 });
 
+var nextId = function() {
+    var r;
+    while (true) {
+        r = Math.trunc(Math.random() * USERNAMES.length);
+        if(currentIds.indexOf(r) == -1) {
+            return r;
+        }
+    }
+}
+
 var get_url = function(x) {
     var path = url.parse(x).pathname;
     return path.split("/")[1];
-};
-
-
-var generate_username = function (){
-    return USERNAMES[numUsers];
 };
