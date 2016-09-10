@@ -143,14 +143,3 @@ ul {
   right: 0;
   width: 100%;
 }
-
-.bubble { 
-    position: relative;
-    width: 335px;
-    height: 65px;
-    padding: 0px;
-    background: #FFFFFF;
-    -webkit-border-radius: 13px;
-    -moz-border-radius: 13px;
-    border-radius: 13px;
-}

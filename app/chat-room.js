@@ -246,6 +246,11 @@ $(document).ready(function() {
     addParticipantsMessage(data);
   });
 
+  socket.on('denied', function(reason) {
+    log('Could not join. ' + reason);
+    socket.disconnect();
+  });
+
   // Whenever the server emits 'new message', update the chat body
   socket.on('new message', function (data) {
     addChatMessage(data);
