@@ -11,7 +11,6 @@ var server = require('http').createServer(app);
 
 var io = require('socket.io')(server);
 
-app.use(express.static(path.resolve("polymer")));
 
 //console.log(path.resolve("polymer"))
 
@@ -25,12 +24,12 @@ server.listen(port, function () {
 
 
 app.use(bodyParser.json());
-app.use(express.static(path.resolve("../polymer")));
+app.use(express.static(path.resolve("frontend")));
 
 
 app.get("/", function (req,res){
     //res.render('polymer/index')
-    res.sendFile("index.html",{ root: __dirname + "/../polymer" });
+    res.sendFile("index.html",{ root: __dirname + "/../frontend" });
 });
 
 app.get("/[a-z]{4}/", function(req,res,next){
