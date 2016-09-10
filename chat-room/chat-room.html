@@ -1,0 +1,108 @@
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../shared-styles.html">
+
+<dom-module id="chat-room">
+  <template>
+  <style include="shared-styles">
+    /*
+    :host {
+      display: block;
+      padding: 10px;
+    }
+    */
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    html, input {
+      font-family:
+        "HelveticaNeue-Light",
+        "Helvetica Neue Light",
+        "Helvetica Neue",
+        Helvetica,
+        Arial,
+        "Lucida Grande",
+        sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    ul {
+      list-style: none;
+      word-wrap: break-word;
+    }
+
+
+
+    /* Messages */
+
+    .chatArea {
+      height: 100%;
+
+      padding-bottom: 60px;
+    }
+
+    .messages {
+      height: 100%;
+      margin: 0;
+      overflow-y: scroll;
+      padding: 10px 20px 10px 20px;
+    }
+
+    .message.typing .messageBody {
+      color: gray;
+    }
+
+
+
+    /* Input */
+
+
+
+    input{
+        border: 10px solid #000;
+        bottom: 0;
+        height: 60px;
+        position: fixed;
+        right: 0;
+        width: 100%
+    }
+
+
+  </style>
+
+  <ul class="pages">
+    <li class="chat page">
+      <div class="chatArea" >
+        <ul class="messages"></ul>
+        <input class="inputMessage" placeholder="Type here..."/>
+      </div>
+    </li>
+
+  </ul>
+
+
+
+  </template>
+
+  <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+  <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+  <script src="chat-room.js"></script>
+  <script>
+    Polymer({
+      is: 'chat-room'
+    });
+  </script>
+</dom-module>
+</html>
