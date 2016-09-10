@@ -4,17 +4,11 @@ var bodyParser = require("body-parser");
 var path = require('path');
 var app = express();
 var server = require('http').createServer(app);
-
-// var server = app.listen(80, function() {
-//     console.log("Server started.");
-// });
-
 var io = require('socket.io')(server);
 
-
 var gameStates = {};
-
 var port = process.env.PORT || 3000;
+var USERNAMES = ["Joe", "Nick", "Steve", "Bill", "Mary", "Greg"]
 
 server.listen(port, function () {
     console.log('Server listening at port %d', port);
@@ -106,12 +100,7 @@ var get_url = function(x) {
     return path.split("/")[1];
 };
 
-var cur_user = 0
 
 var generate_username = function (){
-    cur_user++
-
-    return cur_user;
+    return USERNAMES[numUsers];
 };
-
-
