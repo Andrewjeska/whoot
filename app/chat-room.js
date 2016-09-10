@@ -191,7 +191,6 @@ $(document).ready(function() {
 
   // Gets the color of a username through our hash function
   function getUsernameColor (username) {
-    /*
     // Compute hash code
     var hash = 7;
     for (var i = 0; i < username.length; i++) {
@@ -199,8 +198,7 @@ $(document).ready(function() {
     }
     // Calculate color
     var index = Math.abs(hash % COLORS.length);
-    */
-    return COLORS[parseInt(username)];
+    return COLORS[index];
   }
 
   // Keyboard events
