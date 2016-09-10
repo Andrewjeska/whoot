@@ -26,6 +26,9 @@ $(document).ready(function() {
 
   var socket = io();
 
+  socket.emit('add user');
+  $chatPage.show();
+
   function addParticipantsMessage (data) {
     var message = '';
     if (data.numUsers === 1) {
@@ -58,7 +61,6 @@ $(document).ready(function() {
     //}
   }
 
-  socket.emit('add user');
 
 
   // Sends a chat message
@@ -152,7 +154,6 @@ $(document).ready(function() {
     } else {
       $messages.append($el);
     }
-    console.log($messages);
     $messages[0].scrollTop = $messages[0].scrollHeight;
   }
 
@@ -190,6 +191,7 @@ $(document).ready(function() {
 
   // Gets the color of a username through our hash function
   function getUsernameColor (username) {
+    /*
     // Compute hash code
     var hash = 7;
     for (var i = 0; i < username.length; i++) {
@@ -197,7 +199,8 @@ $(document).ready(function() {
     }
     // Calculate color
     var index = Math.abs(hash % COLORS.length);
-    return COLORS[index];
+    */
+    return COLORS[parseInt(username)];
   }
 
   // Keyboard events
@@ -236,12 +239,12 @@ $(document).ready(function() {
   // Whenever the server emits 'login', log the login message
   socket.on('login', function (data) {
     connected = true;
+    username = data.username;
     // Display the welcome message
-    var message = "Welcome to Socket.IO Chat – ";
+    var message = "Welcome to Socket.IO Chat – " + data.username;
     log(message, {
       prepend: true
     });
-    console.log('user ' + data.username);
     addParticipantsMessage(data);
   });
 
