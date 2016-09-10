@@ -27,8 +27,9 @@
   <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <!-- <link rel="stylesheet" href="http://rawgit.com/dbtek/angular-aside/master/dist/css/angular-aside.css"> -->
 </head>
-<body  ng-controller="MainCtrl">
+<body ng-controller="sideBarCtrl" class="ng-scope">
 
   <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
@@ -41,7 +42,7 @@
         <div class="container-fluid">
           <div class="navbar-header">
             <hamburger-toggle state="tgState" class="hamburger-toggle"></hamburger-toggle>
-            <a class="navbar-brand" style="padding-left: 50%;">
+            <a class="navbar-brand">
               <b>who</b>ot
             </a>
           </div>
@@ -57,8 +58,14 @@
       </ul>
  </div>
 
+
+
 <div class="content" ng-class="{'sidenav-open': tgState}">
+
+
     <div class="chat"></div>
+
+
 </div>
 
 
@@ -72,7 +79,7 @@
     });
 
     angular.module('myApp', ['ngHamburger'])
-        .controller('MainCtrl', function($scope) {
+        .controller('sideBarCtrl', function($scope) {
           $scope.tgState = false;
         });
   </script>
