@@ -10,6 +10,10 @@ $(document).ready(function() {
   var $messages = $('.messages'); // Messages area
   var $inputMessage = $('.inputMessage'); // Input message input box
   var $drawingPill = $('.drawing-pill');
+  var $paint = $('.paint');
+  var $paint2 = $('.paint2');
+  $paint.hide();
+  $paint2.hide();
 
   //var $loginPage = $('.login.page'); // The login page
   var $chatPage = $('.chat.page'); // The chatroom page
@@ -289,11 +293,13 @@ $(document).ready(function() {
   socket.on('beginDrawing', function(data) {
     var topic = data.topic;
     var team = data.team;
-    $('.paint').show();
+    $paint.show();
   });
 
   socket.on('pickTopic', function() {
     var topic = prompt('Pick a topic to be drawn');
     socket.emit('topicPicked', topic);
+    $paint.show();
+    $paint2.show();
   });
 });
