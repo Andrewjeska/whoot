@@ -8,7 +8,7 @@ var io = require('socket.io')(server);
 
 var roomStates = {};
 var port = process.env.PORT || 3000;
-var USERNAMES = ["( ͡° ͜ʖ ͡°)", "ಠ_ಠ", "Pat", "Terry", "Frankie", "Tyler", "Dakota", "Sam", "Peyton", "Logan", "Jordan", "Hayden", "Stevie", "Jesse", "Devon", "Jamie", "Jaden"]
+var USERNAMES = ["( ͡° ͜ʖ ͡°)", "ಠ_ಠ", "Harambe", "Hugh Mungus", "Tuck Frump", "Kappa", "Pat", "Terry", "Frankie", "Tyler", "Dakota", "Sam", "Peyton", "Logan", "Jordan", "Hayden", "Stevie", "Jesse", "Devon", "Jamie", "Jaden"]
 
 server.listen(port, function () {
     console.log('Server listening at port %d', port);
