@@ -188,7 +188,7 @@ var nextId = function(room) {
     var r;
     while (true) {
         r = Math.trunc(Math.random() * USERNAMES.length);
-        if(roomStates[room].currentIds.r == null) {
+        if(roomStates[room].currentIds[r] == null) {
             return r;
         }
     }
