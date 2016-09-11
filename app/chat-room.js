@@ -287,7 +287,7 @@ $(document).ready(function() {
 
   socket.on('beginDrawing', function(data) {
     var topic = data.topic;
-    var team = data.team; 
+    var team = data.team;
     $('.paint').show();
     console.log("Drawing " + topic + " for team " + team);
   });
