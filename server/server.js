@@ -177,6 +177,7 @@ io.on('connection', function (socket) {
         //get my team number
         var myRoom = roomStates[room];
         var teamNum = myRoom.currentIds[id]['team'];
+        drawData['team'] = teamNum;
 
         myRoom+= ':' + teamNum;
 
