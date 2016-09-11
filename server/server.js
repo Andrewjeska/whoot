@@ -96,7 +96,7 @@ io.on('connection', function (socket) {
             //remove id from room state
 
             //roomStates[room].currentIds.splice(roomStates[room].currentIds.indexOf(id), 1);
-            delete roomStates[room].currentIds.id;
+            delete roomStates[room].currentIds[id];
             // echo globally that this client has left
             socket.to(room).broadcast.emit('user left', {
                 username: username,
@@ -186,11 +186,15 @@ io.on('connection', function (socket) {
 
 var nextId = function(room) {
     var r;
+
+    r=0;
     while (true) {
-        r = Math.trunc(Math.random() * USERNAMES.length);
+        //r = Math.trunc(Math.random() * USERNAMES.length);
         if(roomStates[room].currentIds[r] == null) {
             return r;
         }
+
+        r++;
     }
 }
 
