@@ -41,9 +41,6 @@
 
 
 
-
-
-
 <div >
     <div class="header" style="position:absolute; width=20%;">
         <div class="navbar navbar-default"  role="navigation">
@@ -70,15 +67,11 @@
 
 
 
-
-
 <div class="content" ng-class="{'sidenav-open': tgState}">
 
-    <!--<div class="chat"></div> -->
-    <!-- <div class="paint"></div> -->
-    <ui-view></ui-view>
-
-
+    <div class="chat"></div>
+    <div class="paint"></div>
+    <!-- <ui-view></ui-view> -->
 
 
 </div>
@@ -91,15 +84,14 @@
 
   <script>
 
-
-
-
+    
     var app = angular.module('myApp', ['ngHamburger', 'ui.router']);
 
     app.controller('sideBarCtrl', function($scope) {
       $scope.tgState = false;
     });
 
+    /*
     app.config(function($stateProvider) {
             $stateProvider
                     .state('paintingAgainstHumanity', {
@@ -114,6 +106,7 @@
 
         }
     );
+    */
   </script>
 </body>
 </html>
