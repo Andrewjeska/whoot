@@ -8,7 +8,7 @@ var io = require('socket.io')(server);
 
 var roomStates = {};
 var port = process.env.PORT || 3000;
-var USERNAMES = ["Joe", "Nick", "Steve", "Bill", "Mary", "Greg", "Harambe"]
+var USERNAMES = ["( ͡° ͜ʖ ͡°)", "ಠ_ಠ", "Pat", "Terry", "Frankie", "Tyler", "Dakota", "Sam", "Peyton", "Logan", "Jordan", "Hayden", "Stevie", "Jesse", "Devon", 'Jamie", "Jaden"]
 
 server.listen(port, function () {
     console.log('Server listening at port %d', port);
@@ -27,9 +27,6 @@ app.get("/[a-z]{4}/", function(req,res,next){
     var room = get_url(req.url);
     res.sendFile("index.html",{ root: __dirname + "/../app" });
 });
-
-var numUsers=0;
-var currentIds=[]
 
 io.on('connection', function (socket) {
 
@@ -54,11 +51,11 @@ io.on('connection', function (socket) {
             roomStates[room] = {'numUsers':0, 'currentIds':[]};
         }
         socket.join(room);
-        if(numUsers >= USERNAMES.length) {
+        if(roomStates[room].numUsers >= USERNAMES.length) {
             socket.emit('denied', 'Room is full.');
             return;
         }
-        id = nextId();
+        id = nextId(room);
         roomStates[room].currentIds.push(id);
         username = USERNAMES[id];
         if (addedUser) return;
@@ -109,11 +106,11 @@ io.on('connection', function (socket) {
     });
 });
 
-var nextId = function() {
+var nextId = function(room) {
     var r;
     while (true) {
         r = Math.trunc(Math.random() * USERNAMES.length);
-        if(currentIds.indexOf(r) == -1) {
+        if(roomStates[room].currentIds.indexOf(r) == -1) {
             return r;
         }
     }
