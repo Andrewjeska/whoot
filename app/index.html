@@ -74,8 +74,8 @@
 
 <div class="content" ng-class="{'sidenav-open': tgState}">
 
-    <!--<div class="chat"></div> -->
-    <!-- <div class="paint"></div> -->
+    <div class="chat"></div>
+    <div class="paint"></div>
     <ui-view></ui-view>
 
 
@@ -90,7 +90,10 @@
   -->
 
   <script>
-
+    $(document).ready(function(){
+        $('.chat').load('chat-room.html');
+        $('.paint').load('paint-game.html');
+    });
 
 
 
@@ -100,20 +103,6 @@
       $scope.tgState = false;
     });
 
-    app.config(function($stateProvider) {
-            $stateProvider
-                    .state('paintingAgainstHumanity', {
-                        url: '/paintingagainsthumanity',
-                        templateUrl: 'paint-game.html',
-                        // controller: 'PaintingAgainstHumanityController'
-                    })
-                    .state('chatRoom', {
-                        url: '',
-                        templateUrl: 'chat-room.html'
-                    });
-
-        }
-    );
   </script>
 </body>
 </html>
