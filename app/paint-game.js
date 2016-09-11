@@ -84,9 +84,9 @@ function addClick(x, y, dragging) {
                         x: x,
                         y: y
                     }
-                    ])
-            }
-        }
+                    ]
+            })
+
 
     } else {
         //not dragging (moveTo). We have stopped dragging so we can send
@@ -113,8 +113,8 @@ function addClick(x, y, dragging) {
                         x: x,
                         y: y
                     }
-                ])
-            }
+                ]
+            })
 
             socketSend(); //We send drawings that we have done, not the other guy
         }
