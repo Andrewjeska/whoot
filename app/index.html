@@ -68,17 +68,15 @@
       </ul>
  </div>
 
-  <!--<a ui-sref="chatRoom" ui-sref-active="active">-->
-      <!--dsd-->
-  <!--</a>-->
 
-  <ui-view></ui-view>
+
+
 
 <div class="content" ng-class="{'sidenav-open': tgState}">
 
-    <div class="chat"></div>
-    <div class="paint"></div>
-
+    <!--<div class="chat"></div> -->
+    <!-- <div class="paint"></div> -->
+    <ui-view></ui-view>
 
 
 
@@ -93,17 +91,8 @@
 
   <script>
 
-    $(document).ready(function() {
-      $(".chat").load("chat-room.html");
-      $(".paint").load("paint-game.html");
-
-  })
 
 
-
-//    $(document).ready(function() {
-//      $(".chat").load("chat-room.html");
-//    });
 
     var app = angular.module('myApp', ['ngHamburger', 'ui.router']);
 
@@ -124,7 +113,7 @@
                     });
 
         }
-);
+    );
   </script>
 </body>
 </html>
