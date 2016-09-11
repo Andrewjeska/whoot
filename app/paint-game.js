@@ -1,4 +1,4 @@
-var socket = io();
+
 
 var context = document.getElementById("canvas").getContext("2d");
 
@@ -9,6 +9,9 @@ var clickDrag = new Array();
 var drawData = new Array(); //our strokes to send to other team
 var paint;
 
+
+import socket from 'chat-room';
+console.log(socket);
 
 function socketDraw(data){
     //receive data from socket io

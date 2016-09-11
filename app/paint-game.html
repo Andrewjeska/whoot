@@ -2,8 +2,23 @@
     <div class="tools">
 
     </div>
+    <h2>
+        <div class="theme">
 
-    <canvas id="canvas" width="400" height="400" ></canvas>
+        </div>
+    </h2>
+    <h3>Draw slowly!</h3>
 
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/paint-game.js"></script>
+
+
+    <canvas id="canvas" width="400" height="500" ></canvas>
+
+     <button class="btn btn-primary" onClick="winner()">Vote!</button>
+
+
+     <script>
+        function winner(){
+            alert("Player " + 1 + " is the winner!")
+        }
+
+     </script>

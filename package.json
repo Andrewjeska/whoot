@@ -6,7 +6,11 @@
   "repository": "https://github.com/angular/angular-seed",
   "license": "MIT",
   "devDependencies": {
+    "babel-core": "^6.14.0",
+    "babel-polyfill": "^6.13.0",
     "bower": "^1.7.7",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.14.0",
     "http-server": "^0.9.0",
     "jasmine-core": "^2.4.1",
     "karma": "^0.13.22",
@@ -14,10 +18,8 @@
     "karma-firefox-launcher": "^0.1.7",
     "karma-jasmine": "^0.3.8",
     "karma-junit-reporter": "^0.4.1",
-    "protractor": "^3.2.2",
-    "cookie-parser": "^1.4.3",
-    "express": "^4.14.0",
-    "multer": "^1.2.0"
+    "multer": "^1.2.0",
+    "protractor": "^3.2.2"
   },
   "scripts": {
     "postinstall": "cd app && bower install",

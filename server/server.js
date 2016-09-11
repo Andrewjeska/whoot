@@ -5,6 +5,7 @@ var path = require('path');
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
+require("babel-core");
 
 var roomStates = {};
 var port = process.env.PORT || 3000;
@@ -127,8 +128,7 @@ io.on('connection', function (socket) {
     });
 
     socket.on('topicPicked', function(topic){
-        console.log("topicPicked" + room);
-        console.log(room);
+
         myRoom = roomStates[room];
 
         users = [];
@@ -171,22 +171,21 @@ io.on('connection', function (socket) {
 
         socket.join(room1);
         socket.join(room2);
-        console.log(room);
+
     });
 
     socket.on('drawUpdate', function (drawData) {
 
         //get my team number
-        console.log(roomStates);
-        console.log(room);
+
         console.log(drawData);
         var myRoom = roomStates[room];
         var teamNum = myRoom.currentIds[id]['team'];
         drawData['team'] = teamNum;
 
         myRoom+= ':' + teamNum;
-
-        socket.to(myRoom).broadcast.emit('drawUpdate', drawData);
+        console.log('transmitting');
+        socket.to(room).broadcast.emit('sendDrawing', drawData);
     });
 });
 

@@ -3,7 +3,7 @@ $(document).ready(function() {
   var FADE_TIME = 150; // ms
   var TYPING_TIMER_LENGTH = 400; // ms
   var COLORS = [ '#e21400', '#91580f', '#f8a700', '#f78b00', '#58dc00', '#287b00', '#a8f07a', '#4ae8c4',
-    '#3b88eb', '#3824aa', '#a700ff', '#d300e7' ]; 
+    '#3b88eb', '#3824aa', '#a700ff', '#d300e7' ];
   // Initialize variables
   var $window = $(window);
   //var $usernameInput = $('.usernameInput'); // Input for username
@@ -26,6 +26,12 @@ $(document).ready(function() {
   var $currentInput = $inputMessage.focus();
 
   var socket = io();
+
+  /*
+  export function getSocket(){
+      return socket;
+  }
+  */
 
   var room_id = $(location).attr('pathname').split("/")[1];
   socket.emit('add user', room_id);
@@ -293,7 +299,9 @@ $(document).ready(function() {
   socket.on('beginDrawing', function(data) {
     var topic = data.topic;
     var team = data.team;
+    $('.theme').text("Theme: " + topic);
     $paint.show();
+    $('button').remove();
   });
 
   socket.on('pickTopic', function() {
@@ -301,5 +309,211 @@ $(document).ready(function() {
     socket.emit('topicPicked', topic);
     $paint.show();
     $paint2.show();
+    //other things for this guy
+    //$(".theme").remove();
+    //$('.theme').text("Theme: " + topic);
+    $( "h3" ).remove();
   });
+
+
+
+
+//paint-game
+
+
+var context = document.getElementById("canvas").getContext("2d");
+
+
+var clickX = new Array();
+var clickY = new Array();
+var clickDrag = new Array();
+
+var drawData = new Array(); //our strokes to send to other team
+var paint;
+
+
+//import socket from 'chat-room';
+//console.log(socket);
+
+function socketDraw(data){
+    //receive data from socket io
+    addExtClick(data);
+    redraw();
+}
+
+//receving stuff from socket.io
+//socket.on('connection', function (socket) {
+
+    // when the server emits 'draw', this listens and executes
+    socket.on('sendDrawing', function (data) {
+        console.log("updating from other user")
+        socketDraw(data)
+
+    });
+//});
+
+//send to latest json to socket io
+function socketSend(x, y, dragging){
+    console.log("sending data");
+    socket.emit('drawUpdate', drawData);
+
+}
+
+
+
+$('#canvas').mousedown(function(e){
+
+    //var mouseX = e.pageX - this.offsetLeft;
+    //var mouseY = e.pageY - this.offsetTop;
+
+    paint = true;
+    addSelfClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, false);
+    redraw();
+});
+
+
+
+$('#canvas').mousemove(function(e){
+
+
+    if(paint){
+        addSelfClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
+        redraw();
+    }
+});
+
+$('#canvas').mouseup(function(e){
+    paint = false;
+});
+
+$('#canvas').mouseleave(function(e){
+    paint = false;
+});
+
+
+function addExtClick(data){
+    //adds one JSON (one stroke) to user canvas
+
+ for(var i = 0; i < data.length; i++){
+    for(var j = 0; j < data[i].path.length; j++) {
+        clickX.push(data[i].path[j].x);
+        clickY.push(data[i].path[j].y);
+        clickDrag.push(data[i].path[j].dragging);
+
+    }
+}
+}
+
+
+function addSelfClick(x, y, dragging) {
+    clickX.push(x);
+    clickY.push(y);
+    clickDrag.push(dragging);
+
+        if(dragging){ //(lineTo)
+            if(drawData.length && drawData[drawData.length - 1].drag){
+                //if we were just dragging (lineTo)
+                //if our command was lineTo
+                drawData[drawData.length - 1].path.push({
+
+                    drag: dragging,
+                    x: x,
+                    y: y
+
+                })
+            } else if (drawData[drawData.length - 1].path[drawData[drawData.length - 1].path.length - 1].drag ){
+
+                drawData[drawData.length - 1].path.push({
+
+                    drag: dragging,
+                    x: x,
+                    y: y
+
+                })
+
+            } else {
+                //starting to drag (last thing was moveTo)
+                drawData.push({
+
+                    command: {
+                        drag: dragging,
+                        x: x,
+                        y: y
+                    },
+
+                    path:[
+                        {
+                            drag: dragging,
+                            x: x,
+                            y: y
+                        }
+                        ]
+                })
+            }
+
+        } else {
+            //not dragging (moveTo). We have stopped dragging so we can send after
+            if(drawData.length && drawData[drawData.length - 1].drag){
+                //if we were just dragging (lineTo)
+                drawData[drawData.length - 1].path.push({
+
+                    drag: dragging,
+                    x: x,
+                    y: y
+
+                })
+            } else {
+                //a single dot, no dragging (moveTo)
+                drawData.push({
+
+                    command: {
+                        drag: dragging,
+                        x: x,
+                        y: y
+                    },
+
+                    path:[
+                        {drag: dragging,
+                            x: x,
+                            y: y
+                        }
+                    ]
+                })
+
+
+            }
+
+        }
+
+    //}
+    console.log(drawData);
+}
+
+
+setInterval(function(){socketSend();}, 3000);
+
+function redraw(){
+
+
+  context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
+
+  context.strokeStyle = "#1ee318";
+  context.lineJoin = "round";
+  context.lineWidth = 5;
+
+  for(var i=0; i < clickX.length; i++) {
+    context.beginPath();
+    if(clickDrag[i] && i){
+      context.moveTo(clickX[i-1], clickY[i-1]);
+     }else{
+       context.moveTo(clickX[i]-1, clickY[i]);
+     }
+     context.lineTo(clickX[i], clickY[i]);
+     context.closePath();
+     context.stroke();
+  }
+}
+
+
+
 });
