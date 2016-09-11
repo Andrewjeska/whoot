@@ -116,8 +116,11 @@ function addClick(x, y, dragging) {
                 ]
             })
 
-            socketSend(); //We send drawings that we have done, not the other guy
+
         }
+        socketSend(); //We send drawings that we have done, not the other guy
+    }
+
 }
 
 function redraw(){
