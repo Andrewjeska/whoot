@@ -2,9 +2,7 @@ $(document).ready(function() {
 
   var FADE_TIME = 150; // ms
   var TYPING_TIMER_LENGTH = 400; // ms
-  var COLORS = [
-    '#e21400', '#91580f', '#f8a700', '#f78b00',
-    '#58dc00', '#287b00', '#a8f07a', '#4ae8c4',
+  var COLORS = [ '#e21400', '#91580f', '#f8a700', '#f78b00', '#58dc00', '#287b00', '#a8f07a', '#4ae8c4',
     '#3b88eb', '#3824aa', '#a700ff', '#d300e7'
   ];
 
@@ -273,5 +271,23 @@ $(document).ready(function() {
   // Whenever the server emits 'stop typing', kill the typing message
   socket.on('stop typing', function (data) {
     removeChatTyping(data);
+  });
+
+  socket.on('requestGameVote', function(data) {
+  });
+
+  socket.on('transitionToGame', function(data) {
+    $('.chat').hide();
+  });
+
+  socket.on('beginDrawing', function(data) {
+    var topic = data.topic;
+    var team = data.team; 
+    $('.paint').show();
+  });
+
+  socket.on('pickTopic', function() {
+    var topic = prompt('Pick a topic to be drawn');
+    socket.emit('topicPicked', topic);
   });
 });
