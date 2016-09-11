@@ -9,36 +9,50 @@ var clickDrag = new Array();
 var drawData = new Array();
 var paint;
 
+
+function socketDraw(data){
+    //receive data from socket io
+    addExtClick(data);
+    redraw();
+}
+
+//receving stuff from socket.io
+socket.on('connection', function (socket) {
+
+    var id;
+    var username;
+    var addedUser = false;
+    var room;
+
+
+    // when the server emits 'draw', this listens and executes
+    socket.on('draw', function (data) {
+        socketDraw(data)
+
+    });
+});
+
+//send to latest json to socket io
+function socketSend(x, y, dragging){
+    socket.emit('drawUpdate', drawData[drawData.length - 1]);
+
+}
+
 $('#canvas').mousedown(function(e){
 
     var mouseX = e.pageX - this.offsetLeft;
     var mouseY = e.pageY - this.offsetTop;
 
     paint = true;
-    addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
+    addSelfClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
     redraw();
 });
 
-function socketSend(x, y, dragging){
-    //send to socket io
 
-    socket.emit('drawUpdate', drawData[drawData.length - 1]);
-
-}
-
-function socketDraw(x, y, dragging){
-    //receive data from socket io
-    //
-    socket.on()
-    addClick(x, y, dragging);
-    redraw();
-
-
-}
 
 $('#canvas').mousemove(function(e){
     if(paint){
-        addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
+        addSelfClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
         redraw();
     }
 });
@@ -52,15 +66,26 @@ $('#canvas').mouseleave(function(e){
 });
 
 
+function addExtClick(data){
+    //adds one JSON (one stroke) to user canvas
+    for(var i=0; i < data.path.length; i++) {
+        clickX.push(data.path[i].x);
+        clickY.push(data.path[i].y);
+        clickDrag.push(data.path[i].dragging);
 
-function addClick(x, y, dragging) {
+    }
+
+}
+
+
+function addSelfClick(x, y, dragging) {
     clickX.push(x);
     clickY.push(y);
     clickDrag.push(dragging);
 
-    if(false){//TODO: if(this click came from THIS user)
-        if(dragging){
-            if(drawData[drawData.length - 1].drag){
+
+        if(dragging){ //(lineTo)
+            if(drawData.length && drawData[drawData.length - 1].drag){
                 //if we were just dragging (lineTo)
                 drawData[drawData.length - 1].path.push({
 
@@ -89,8 +114,8 @@ function addClick(x, y, dragging) {
             }
 
         } else {
-            //not dragging (moveTo). We have stopped dragging so we can send
-            if(drawData[drawData.length - 1].drag){
+            //not dragging (moveTo). We have stopped dragging so we can send after
+            if(drawData.length && drawData[drawData.length - 1].drag){
                 //if we were just dragging (lineTo)
                 drawData[drawData.length - 1].path.push({
 
@@ -121,13 +146,15 @@ function addClick(x, y, dragging) {
             socketSend(); //We send drawings that we have done, not the other guy
         }
 
-    }
+    //}
 }
 
 function redraw(){
+  var colors = ["#df4b26","184fe3", "1ee318" ]
+
   context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
 
-  context.strokeStyle = "#df4b26";
+  context.strokeStyle = colors[Math.floor(Math.random() * colors.length)];
   context.lineJoin = "round";
   context.lineWidth = 5;
 
