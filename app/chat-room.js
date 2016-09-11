@@ -3,9 +3,7 @@ $(document).ready(function() {
   var FADE_TIME = 150; // ms
   var TYPING_TIMER_LENGTH = 400; // ms
   var COLORS = [ '#e21400', '#91580f', '#f8a700', '#f78b00', '#58dc00', '#287b00', '#a8f07a', '#4ae8c4',
-    '#3b88eb', '#3824aa', '#a700ff', '#d300e7'
-  ];
-
+    '#3b88eb', '#3824aa', '#a700ff', '#d300e7' ]; 
   // Initialize variables
   var $window = $(window);
   //var $usernameInput = $('.usernameInput'); // Input for username
@@ -228,6 +226,7 @@ $(document).ready(function() {
   });
 
   $drawingPill.click(function() {
+    if($drawingPill.hasClass('disabled')) return;
     socket.emit('requestGameVote');
   });
 
@@ -283,13 +282,14 @@ $(document).ready(function() {
 
   socket.on('transitionToGame', function(data) {
     $('.chat').hide();
+    $('.chat-pill').removeClass('active');
+    $drawingPill.addClass('disabled').addClass('active');
   });
 
   socket.on('beginDrawing', function(data) {
     var topic = data.topic;
     var team = data.team;
     $('.paint').show();
-    console.log("Drawing " + topic + " for team " + team);
   });
 
   socket.on('pickTopic', function() {

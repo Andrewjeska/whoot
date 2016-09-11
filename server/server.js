@@ -177,6 +177,7 @@ io.on('connection', function (socket) {
         //get my team number
         var myRoom = roomStates[room];
         var teamNum = myRoom.currentIds[id]['team'];
+        drawData['team'] = teamNum;
 
         myRoom+= ':' + teamNum;
 
@@ -191,7 +192,7 @@ var nextId = function(room) {
         r = Math.trunc(Math.random() * USERNAMES.length);
         if(roomStates[room].currentIds[r] == null) {
             return r;
-        }S
+        }
     }
 }
 
