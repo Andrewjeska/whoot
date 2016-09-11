@@ -154,12 +154,12 @@ io.on('connection', function (socket) {
 
             if(teamNum == 1){
                 io.sockets.connected[myRoom.currentIds[memberId]['socket-id']].join(room1);
-                myRoom.currentIds[hostId]['team'] = 1
+                myRoom.currentIds[memberId]['team'] = 1
                 teamNum = 2;
             }
             else{
                 io.sockets.connected[myRoom.currentIds[memberId]['socket-id']].join(room2);
-                myRoom.currentIds[hostId]['team'] = 2
+                myRoom.currentIds[memberId]['team'] = 2
                 teamNum = 1;
             }
         }
@@ -187,14 +187,11 @@ io.on('connection', function (socket) {
 var nextId = function(room) {
     var r;
 
-    r=0;
     while (true) {
-        //r = Math.trunc(Math.random() * USERNAMES.length);
+        r = Math.trunc(Math.random() * USERNAMES.length);
         if(roomStates[room].currentIds[r] == null) {
             return r;
-        }
-
-        r++;
+        }S
     }
 }
 
