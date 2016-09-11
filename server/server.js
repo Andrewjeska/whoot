@@ -35,7 +35,6 @@ io.on('connection', function (socket) {
     var addedUser = false;
     var room;
 
-    console.log("ID: " + socket.id + " end of " + typeof(socket.id));
 
     // when the client emits 'new message', this listens and executes
     socket.on('new message', function (data) {
@@ -57,7 +56,6 @@ io.on('connection', function (socket) {
             socket.emit('denied', 'Room is full.');
             return;
         }
-        console.log(roomStates);
 
         id = nextId(room);
         roomStates[room].currentIds[id] = socket.id;
@@ -66,7 +64,6 @@ io.on('connection', function (socket) {
 
         roomStates[room].numUsers++;
         addedUser = true;
-        console.log("login for " + username);
         socket.emit('login', {
             username: username,
             numUsers: roomStates[room].numUsers
@@ -121,13 +118,12 @@ io.on('connection', function (socket) {
         users = [];
 
         for(var ids in myRoom.currentIds){
-
             users.push(ids);
-        };
+        }
 
         var hostId = users[Math.floor(Math.random() * users.length)];
 
-        io.sockets.connected[myRoom.currentIds.hostId].emit('pickTopic');
+        io.sockets.connected[myRoom.currentIds[hostId]].emit('pickTopic');
     });
 
     socket.on('topicPicked', function(topic){
@@ -137,8 +133,8 @@ io.on('connection', function (socket) {
         users = [];
 
         for(var ids in myRoom.currentIds){
-
-            users.push(ids);
+            if(ids != id)
+                users.push(ids);
         };
 
 
@@ -149,8 +145,6 @@ io.on('connection', function (socket) {
         var room1 = room + ":1";
         var room2 = room + ":2";
 
-
-
         while(users.length > 0){
 
             i = Math.floor(Math.random() * users.length);
@@ -159,17 +153,17 @@ io.on('connection', function (socket) {
             teamMap[memberId] = teamNum;
 
             if(teamNum == 1){
-                io.sockets.connected[memberId].join(room1);
+                io.sockets.connected[myRoom.currentIds[memberId]].join(room1);
                 teamNum = 2;
             }
             else{
-                io.sockets.connected[memberId].join(room2);
+                io.sockets.connected[myRoom.currentIds[memberId]].join(room2);
                 teamNum = 1;
             }
         }
 
-        socket.broadcast().to(room1).emit('beginDrawing', {'topic' :topic, 'team' : '1'});
-        socket.broadcast().to(room2).emit('beginDrawing', {'topic' :topic, 'team' : '2'});
+        socket.broadcast.to(room1).emit('beginDrawing', {'topic' :topic, 'team' : '1'});
+        socket.broadcast.to(room2).emit('beginDrawing', {'topic' :topic, 'team' : '2'});
 
 
         socket.join(room1);

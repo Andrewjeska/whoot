@@ -11,6 +11,7 @@ $(document).ready(function() {
   //var $usernameInput = $('.usernameInput'); // Input for username
   var $messages = $('.messages'); // Messages area
   var $inputMessage = $('.inputMessage'); // Input message input box
+  var $drawingPill = $('.drawing-pill');
 
   //var $loginPage = $('.login.page'); // The login page
   var $chatPage = $('.chat.page'); // The chatroom page
@@ -226,6 +227,10 @@ $(document).ready(function() {
     $inputMessage.focus();
   });
 
+  $drawingPill.click(function() {
+    socket.emit('requestGameVote');
+  });
+
   // Socket events
 
   // Whenever the server emits 'login', log the login message
@@ -284,6 +289,7 @@ $(document).ready(function() {
     var topic = data.topic;
     var team = data.team; 
     $('.paint').show();
+    console.log("Drawing " + topic + " for team " + team);
   });
 
   socket.on('pickTopic', function() {
