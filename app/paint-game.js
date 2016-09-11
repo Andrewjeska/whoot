@@ -58,69 +58,70 @@ function addClick(x, y, dragging) {
     clickY.push(y);
     clickDrag.push(dragging);
 
-    //TODO: if(this click came from THIS user)
-    if(dragging){
-        if(drawData[drawData.length - 1].drag){
-            //if we were just dragging (lineTo)
-            drawData[drawData.length - 1].path.push({
+    if(false){//TODO: if(this click came from THIS user)
+        if(dragging){
+            if(drawData[drawData.length - 1].drag){
+                //if we were just dragging (lineTo)
+                drawData[drawData.length - 1].path.push({
 
-                drag: dragging,
-                x: x,
-                y: y
-
-            })
-        } else {
-            //starting to drag (last thing was moveTo)
-            drawData.push({
-                command {
                     drag: dragging,
                     x: x,
                     y: y
-                },
 
-                path:[
-                    {
+                })
+            } else {
+                //starting to drag (last thing was moveTo)
+                drawData.push({
+                    command {
                         drag: dragging,
                         x: x,
                         y: y
-                    }
-                    ]
-            })
+                    },
 
+                    path:[
+                        {
+                            drag: dragging,
+                            x: x,
+                            y: y
+                        }
+                        ]
+                })
+            }
 
-    } else {
-        //not dragging (moveTo). We have stopped dragging so we can send
-        if(drawData[drawData.length - 1].drag){
-            //if we were just dragging (lineTo)
-            drawData[drawData.length - 1].path.push({
-
-                drag: dragging,
-                x: x,
-                y: y
-
-            })
         } else {
-            //a single dot, no dragging (moveTo)
-            drawData.push({
-                command {
+            //not dragging (moveTo). We have stopped dragging so we can send
+            if(drawData[drawData.length - 1].drag){
+                //if we were just dragging (lineTo)
+                drawData[drawData.length - 1].path.push({
+
                     drag: dragging,
                     x: x,
                     y: y
-                },
 
-                path:[
-                    {drag: dragging,
+                })
+            } else {
+                //a single dot, no dragging (moveTo)
+                drawData.push({
+                    command {
+                        drag: dragging,
                         x: x,
                         y: y
-                    }
-                ]
-            })
+                    },
+
+                    path:[
+                        {drag: dragging,
+                            x: x,
+                            y: y
+                        }
+                    ]
+                })
 
 
+            }
+            socketSend(); //We send drawings that we have done, not the other guy
         }
-        socketSend(); //We send drawings that we have done, not the other guy
-    }
 
+    }
 }
 
 function redraw(){
