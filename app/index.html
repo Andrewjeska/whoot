@@ -41,9 +41,6 @@
 
 
 
-
-
-
 <div >
     <div class="header" style="position:absolute; width=20%;">
         <div class="navbar navbar-default"  role="navigation">
@@ -70,15 +67,11 @@
 
 
 
-
-
 <div class="content" ng-class="{'sidenav-open': tgState}">
 
     <div class="chat"></div>
     <div class="paint"></div>
-    <ui-view></ui-view>
-
-
+    <!-- <ui-view></ui-view> -->
 
 
 </div>
@@ -90,6 +83,7 @@
   -->
 
   <script>
+<<<<<<< HEAD
     $(document).ready(function(){
         $('.chat').load('chat-room.html');
         $('.paint').load('paint-game.html');
@@ -97,12 +91,32 @@
 
 
 
+=======
+
+    
+>>>>>>> ee7a25d26d3afe63f9406f6a449a47966ede24a8
     var app = angular.module('myApp', ['ngHamburger', 'ui.router']);
 
     app.controller('sideBarCtrl', function($scope) {
       $scope.tgState = false;
     });
 
+    /*
+    app.config(function($stateProvider) {
+            $stateProvider
+                    .state('paintingAgainstHumanity', {
+                        url: '/paintingagainsthumanity',
+                        templateUrl: 'paint-game.html',
+                        // controller: 'PaintingAgainstHumanityController'
+                    })
+                    .state('chatRoom', {
+                        url: '',
+                        templateUrl: 'chat-room.html'
+                    });
+
+        }
+    );
+    */
   </script>
 </body>
 </html>
