@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>whoot</title>
+  <title>Whoot</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
@@ -62,7 +62,8 @@
   <div class="sidenav" ng-class="{open: tgState}">
       <ul class="nav nav-pills nav-stacked">
         <li role="presentation" class="active"><a href="#">Open Chat</a></li>
-        <li role="presentation"><a href="#">Painting against Humanity</a></li>
+        <li role="presentation" class="drawing-pill"><a href="#">Drawing Against Humanity</a></li>
+        <li role="presentation"><a href="#">Mafia</a></li>
         <li role="presentation"><a href="#">Another Game?</a></li>
       </ul>
  </div>
@@ -114,8 +115,7 @@
             $stateProvider
                     .state('paintingAgainstHumanity', {
                         url: '/paintingagainsthumanity',
-                        // templateUrl: 'app/painting-against-humanity.html',
-                        template: '<h3>losdasdasdl</h3>',
+                        templateUrl: 'paint-game.html',
                         // controller: 'PaintingAgainstHumanityController'
                     })
                     .state('chatRoom', {
