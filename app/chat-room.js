@@ -18,7 +18,7 @@ $(document).ready(function() {
   var $chatPage = $('.chat.page'); // The chatroom page
 
   // Prompt for setting a username
-  //var username;
+  var username;
   var connected = false;
   var typing = false;
   var lastTypingTime;
@@ -26,7 +26,8 @@ $(document).ready(function() {
 
   var socket = io();
 
-  socket.emit('add user');
+  var room_id = $(location).attr('pathname').split("/")[1];
+  socket.emit('add user', room_id);
   $chatPage.show();
 
   function addParticipantsMessage (data) {
@@ -221,11 +222,6 @@ $(document).ready(function() {
   });
 
   // Click events
-
-  // Focus input when clicking anywhere on login page
-  /*$loginPage.click(function () {
-    $currentInput.focus();
-});*/
 
   // Focus input when clicking on the message input's border
   $inputMessage.click(function () {
