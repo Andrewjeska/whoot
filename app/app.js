@@ -11,3 +11,10 @@ angular.module('myApp', [
 
   $routeProvider.otherwise({redirectTo: '/view1'});
 }]);
+
+function switchToPainting(){
+    $(".chat").hide("slow", function(){
+        $(".paint").show();
+    });
+
+}

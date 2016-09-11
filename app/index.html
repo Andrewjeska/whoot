@@ -1,8 +1,5 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html lang="en" ng-app="myApp" class="no-js"> <!--<![endif]-->
+<html ng-app="myApp">
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,18 +15,23 @@
   <script src="bower_components/angular-route/angular-route.js"></script>
   <script src="app.js"></script>
   <script src="view1/view1.js"></script>
-  <script src="view2/view2.js"></script> 
+  <script src="view2/view2.js"></script>
   <script src="components/version/version.js"></script>
   <script src="components/version/version-directive.js"></script>
   <script src="components/version/interpolate-filter.js"></script>
   <script src="bower_components/angular-hamburger-toggle/dist/angular-hamburger-toggle.js"></script>
   <link rel="stylesheet" href="bower_components/angular-hamburger-toggle/dist/angular-hamburger-toggle.css">
   <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+  <script src="/sketch.js"></script>
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-  <!-- <link rel="stylesheet" href="http://rawgit.com/dbtek/angular-aside/master/dist/css/angular-aside.css"> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.1/angular-ui-router.min.js"></script>
+
+    <!-- <link rel="stylesheet" href="http://rawgit.com/dbtek/angular-aside/master/dist/css/angular-aside.css"> -->
 </head>
-<body ng-controller="sideBarCtrl" class="ng-scope">
+
+<body ng-app="myApp" ng-controller="sideBarCtrl" class="ng-scope">
+
 
   <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
@@ -38,8 +40,12 @@
 
 
 
-<div>
-    <div class="header">
+
+
+
+
+<div >
+    <div class="header" style="position:absolute; width=20%;">
         <div class="navbar navbar-default"  role="navigation">
           <div class="container-fluid" >
             <div class="navbar-header">
@@ -62,11 +68,18 @@
       </ul>
  </div>
 
+  <!--<a ui-sref="chatRoom" ui-sref-active="active">-->
+      <!--dsd-->
+  <!--</a>-->
 
+  <ui-view></ui-view>
 
 <div class="content" ng-class="{'sidenav-open': tgState}">
 
     <div class="chat"></div>
+    <div class="paint"></div>
+
+
 
 
 
@@ -79,14 +92,40 @@
   -->
 
   <script>
-    $(document).ready(function() {
+
+    /*$(document).ready(function() {
       $(".chat").load("chat-room.html");
+      $(".paint").load("paint-game.html");
+
+  })*/
+
+
+
+//    $(document).ready(function() {
+//      $(".chat").load("chat-room.html");
+//    });
+
+    var app = angular.module('myApp', ['ngHamburger', 'ui.router']);
+
+    app.controller('sideBarCtrl', function($scope) {
+      $scope.tgState = false;
     });
 
-    angular.module('myApp', ['ngHamburger'])
-        .controller('sideBarCtrl', function($scope) {
-          $scope.tgState = false;
-        });
+    app.config(function($stateProvider) {
+            $stateProvider
+                    .state('paintingAgainstHumanity', {
+                        url: '/paintingagainsthumanity',
+                        // templateUrl: 'app/painting-against-humanity.html',
+                        template: '<h3>losdasdasdl</h3>',
+                        // controller: 'PaintingAgainstHumanityController'
+                    })
+                    .state('chatRoom', {
+                        url: '',
+                        templateUrl: 'chat-room.html'
+                    });
+
+        }
+);
   </script>
 </body>
 </html>
