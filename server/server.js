@@ -58,7 +58,7 @@ io.on('connection', function (socket) {
         }
 
         id = nextId(room);
-        roomStates[room].currentIds[id] = socket.id;
+        roomStates[room].currentIds[id] = {'socket-id' : socket.id};
         username = USERNAMES[id];
         if (addedUser) return;
 
@@ -123,7 +123,7 @@ io.on('connection', function (socket) {
 
         var hostId = users[Math.floor(Math.random() * users.length)];
 
-        io.sockets.connected[myRoom.currentIds[hostId]].emit('pickTopic');
+        io.sockets.connected[myRoom.currentIds[hostId]['socket-id']].emit('pickTopic');
     });
 
     socket.on('topicPicked', function(topic){
@@ -153,11 +153,13 @@ io.on('connection', function (socket) {
             teamMap[memberId] = teamNum;
 
             if(teamNum == 1){
-                io.sockets.connected[myRoom.currentIds[memberId]].join(room1);
+                io.sockets.connected[myRoom.currentIds[memberId]['socket-id']].join(room1);
+                myRoom.currentIds[hostId]['team'] = 1
                 teamNum = 2;
             }
             else{
-                io.sockets.connected[myRoom.currentIds[memberId]].join(room2);
+                io.sockets.connected[myRoom.currentIds[memberId]['socket-id']].join(room2);
+                myRoom.currentIds[hostId]['team'] = 2
                 teamNum = 1;
             }
         }
@@ -168,6 +170,17 @@ io.on('connection', function (socket) {
 
         socket.join(room1);
         socket.join(room2);
+    });
+
+    socket.on('drawUpdate', function (drawData) {
+
+        //get my team number
+        var myRoom = roomStates[room];
+        var teamNum = myRoom.currentIds[id]['team'];
+
+        myRoom+= ':' + teamNum;
+
+        socket.to(myRoom).broadcast.emit('drawUpdate', drawData)
     });
 });
 
