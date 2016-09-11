@@ -22,5 +22,8 @@
   "scripts": {
     "postinstall": "cd app && bower install",
     "start": "node ./server/server.js"
+  },
+  "dependencies": {
+    "angular-ui-router": "^1.0.0-beta.2"
   }
 }
