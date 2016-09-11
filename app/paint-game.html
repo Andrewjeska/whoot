@@ -3,7 +3,7 @@
 
     </div>
 
-    <canvas id="canvas" width="500" height="500"></canvas>
+    <canvas id="canvas" width="400" height="400" ></canvas>
 
     <script>
 
@@ -18,7 +18,7 @@
 
             var mouseX = e.pageX - this.offsetLeft;
             var mouseY = e.pageY - this.offsetTop;
-            //debugger
+            debugger
             paint = true;
             addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
             socketSend(e.pageX - this.offsetLeft, e.pageY - this.offsetTop)

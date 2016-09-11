@@ -184,8 +184,8 @@ ul {
 }
 
 canvas {
-    postion: absolute;
-    height: 500px;
-    width: 100%;
+
+    /*height: 500px;
+    width: 90%;*/
     border:1px solid black;
 }
