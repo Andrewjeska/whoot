@@ -29,7 +29,7 @@ function socketSend(x, y, dragging){
 function socketDraw(x, y, dragging){
     //receive data from socket io
     //
-    socket.on(//something)
+    socket.on()
     addClick(x, y, dragging);
     redraw();
 
@@ -72,7 +72,7 @@ function addClick(x, y, dragging) {
             } else {
                 //starting to drag (last thing was moveTo)
                 drawData.push({
-                    command {
+                    command: {
                         drag: dragging,
                         x: x,
                         y: y
@@ -102,7 +102,7 @@ function addClick(x, y, dragging) {
             } else {
                 //a single dot, no dragging (moveTo)
                 drawData.push({
-                    command {
+                    command: {
                         drag: dragging,
                         x: x,
                         y: y
