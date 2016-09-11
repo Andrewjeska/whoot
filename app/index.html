@@ -25,11 +25,12 @@
   <script src="bower_components/angular-hamburger-toggle/dist/angular-hamburger-toggle.js"></script>
   <link rel="stylesheet" href="bower_components/angular-hamburger-toggle/dist/angular-hamburger-toggle.css">
   <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+  <script src="/sketch.js"></script>
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   <!-- <link rel="stylesheet" href="http://rawgit.com/dbtek/angular-aside/master/dist/css/angular-aside.css"> -->
 </head>
-<body ng-controller="sideBarCtrl" class="ng-scope">
+<body ng-controller="sideBarCtrl" class="ng-scope" >
 
   <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
@@ -38,8 +39,12 @@
 
 
 
-<div>
-    <div class="header">
+
+
+
+
+<div >
+    <div class="header" style="position:absolute; width=20%;">
         <div class="navbar navbar-default"  role="navigation">
           <div class="container-fluid" >
             <div class="navbar-header">
@@ -56,7 +61,7 @@
   <div class="sidenav" ng-class="{open: tgState}">
       <ul class="nav nav-pills nav-stacked">
         <li role="presentation" class="active"><a href="#">Open Chat</a></li>
-        <li role="presentation"><a href="#">Mafia</a></li>
+        <li role="presentation"><a href="#">Painting against Humanity</a></li>
         <li role="presentation"><a href="#">Another Game?</a></li>
       </ul>
  </div>
@@ -66,6 +71,9 @@
 <div class="content" ng-class="{'sidenav-open': tgState}">
 
     <div class="chat"></div>
+    <div class="paint"></div>
+
+
 
 
 
@@ -80,7 +88,11 @@
   <script>
     $(document).ready(function() {
       $(".chat").load("chat-room.html");
-    });
+      $(".paint").load("paint-game.html");
+
+    })
+
+
 
     angular.module('myApp', ['ngHamburger'])
         .controller('sideBarCtrl', function($scope) {
