@@ -17,19 +17,17 @@ function socketDraw(data){
 }
 
 //receving stuff from socket.io
-//socket.on('connection', function (socket) {
+socket.on('connection', function (socket) {
 
     // when the server emits 'draw', this listens and executes
     socket.on('drawUpdate', function (data) {
-        console.log("updating from other user")
         socketDraw(data)
 
     });
-//});
+});
 
 //send to latest json to socket io
 function socketSend(x, y, dragging){
-    console.log("sending data");
     socket.emit('drawUpdate', drawData[drawData.length - 1]);
 
 }
@@ -40,7 +38,7 @@ $('#canvas').mousedown(function(e){
     var mouseY = e.pageY - this.offsetTop;
 
     paint = true;
-    addSelfClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, false);
+    addSelfClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
     redraw();
 });
 
@@ -83,7 +81,6 @@ function addSelfClick(x, y, dragging) {
         if(dragging){ //(lineTo)
             if(drawData.length && drawData[drawData.length - 1].drag){
                 //if we were just dragging (lineTo)
-                //if our command was lineTo
                 drawData[drawData.length - 1].path.push({
 
                     drag: dragging,
@@ -91,16 +88,6 @@ function addSelfClick(x, y, dragging) {
                     y: y
 
                 })
-            } else if (drawData[drawData.length - 1].path[drawData[drawData.length - 1].path.length - 1].drag ){
-
-                drawData[drawData.length - 1].path.push({
-
-                    drag: dragging,
-                    x: x,
-                    y: y
-
-                })
-
             } else {
                 //starting to drag (last thing was moveTo)
                 drawData.push({
@@ -154,7 +141,6 @@ function addSelfClick(x, y, dragging) {
         }
 
     //}
-    console.log(drawData);
 }
 
 function redraw(){
