@@ -8,7 +8,7 @@ var io = require('socket.io')(server);
 
 var roomStates = {};
 var port = process.env.PORT || 3000;
-var USERNAMES = ["( ͡° ͜ʖ ͡°)", "ಠ_ಠ", "Pat", "Terry", "Frankie", "Tyler", "Dakota", "Sam", "Peyton", "Logan", "Jordan", "Hayden", "Stevie", "Jesse", "Devon", 'Jamie", "Jaden"]
+var USERNAMES = ["( ͡° ͜ʖ ͡°)", "ಠ_ಠ", "Pat", "Terry", "Frankie", "Tyler", "Dakota", "Sam", "Peyton", "Logan", "Jordan", "Hayden", "Stevie", "Jesse", "Devon", "Jamie", "Jaden"]
 
 server.listen(port, function () {
     console.log('Server listening at port %d', port);
@@ -35,6 +35,8 @@ io.on('connection', function (socket) {
     var addedUser = false;
     var room;
 
+    console.log("ID: " + socket.id + " end of " + typeof(socket.id));
+
     // when the client emits 'new message', this listens and executes
     socket.on('new message', function (data) {
         // we tell the client to execute 'new message'
@@ -48,20 +50,21 @@ io.on('connection', function (socket) {
     socket.on('add user', function (path) {
         room = path;
         if(roomStates[room] == null) {
-            roomStates[room] = {'numUsers':0, 'currentIds':[]};
+            roomStates[room] = {'numUsers':0, 'currentIds':{}};
         }
         socket.join(room);
         if(roomStates[room].numUsers >= USERNAMES.length) {
             socket.emit('denied', 'Room is full.');
             return;
         }
+        console.log(roomStates);
+
         id = nextId(room);
-        roomStates[room].currentIds.push(id);
+        roomStates[room].currentIds[id] = socket.id;
         username = USERNAMES[id];
         if (addedUser) return;
 
-        // we store the username in the socket session for this client
-        (roomStates[room].numUsers)++;
+        roomStates[room].numUsers++;
         addedUser = true;
         console.log("login for " + username);
         socket.emit('login', {
@@ -92,17 +95,85 @@ io.on('connection', function (socket) {
     // when the user disconnects.. perform this
     socket.on('disconnect', function () {
         if (addedUser) {
-            --(roomStates[room].numUsers);
-            currentIds.splice(currentIds.indexOf(id), 1);
+            roomStates[room].numUsers--;
+            //remove id from room state
+
+            //roomStates[room].currentIds.splice(roomStates[room].currentIds.indexOf(id), 1);
+            delete roomStates[room].currentIds.id;
             // echo globally that this client has left
             socket.to(room).broadcast.emit('user left', {
                 username: username,
                 numUsers: roomStates[room].numUsers
             });
             if(roomStates[room].numUsers <= 0) {
-                roomStates[room] = null;
+                delete roomStates[room];
             }
         }
+    });
+
+    // a user starts a game and transitions into game mode
+    socket.on('requestGameVote', function(){
+
+        io.to(room).emit('transitionToGame');
+
+        myRoom = roomStates[room];
+
+        users = [];
+
+        for(var ids in myRoom.currentIds){
+
+            users.push(ids);
+        };
+
+        var hostId = users[Math.floor(Math.random() * users.length)];
+
+        io.sockets.connected[myRoom.currentIds.hostId].emit('pickTopic');
+    });
+
+    socket.on('topicPicked', function(topic){
+
+        myRoom = roomStates[room];
+
+        users = [];
+
+        for(var ids in myRoom.currentIds){
+
+            users.push(ids);
+        };
+
+
+        var teamNum = 1;
+
+        var teamMap = {};
+
+        var room1 = room + ":1";
+        var room2 = room + ":2";
+
+
+
+        while(users.length > 0){
+
+            i = Math.floor(Math.random() * users.length);
+            var memberId = users[i];
+            users.splice(i, 1);
+            teamMap[memberId] = teamNum;
+
+            if(teamNum == 1){
+                io.sockets.connected[memberId].join(room1);
+                teamNum = 2;
+            }
+            else{
+                io.sockets.connected[memberId].join(room2);
+                teamNum = 1;
+            }
+        }
+
+        socket.broadcast().to(room1).emit('beginDrawing', {'topic' :topic, 'team' : '1'});
+        socket.broadcast().to(room2).emit('beginDrawing', {'topic' :topic, 'team' : '2'});
+
+
+        socket.join(room1);
+        socket.join(room2);
     });
 });
 
@@ -110,7 +181,7 @@ var nextId = function(room) {
     var r;
     while (true) {
         r = Math.trunc(Math.random() * USERNAMES.length);
-        if(roomStates[room].currentIds.indexOf(r) == -1) {
+        if(roomStates[room].currentIds.r == null) {
             return r;
         }
     }
