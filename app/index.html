@@ -6,7 +6,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>My AngularJS App</title>
+  <title>whoot</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
@@ -27,8 +27,9 @@
   <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <!-- <link rel="stylesheet" href="http://rawgit.com/dbtek/angular-aside/master/dist/css/angular-aside.css"> -->
 </head>
-<body>
+<body ng-controller="sideBarCtrl" class="ng-scope">
 
   <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
@@ -36,21 +37,42 @@
 
 
 
-  <div>
-      <div class="header">
-          <div class="navbar navbar-default" role="navigation">
-            <div class="container-fluid">
-              <div class="navbar-header">
-                <hamburger-toggle state="tgState" class="hamburger-toggle"></hamburger-toggle>
-                <a class="navbar-brand" style="padding-left: 50%;">
-                  <b>who</b>ot
-                </a>
-              </div>
+
+<div>
+    <div class="header">
+        <div class="navbar navbar-default"  role="navigation">
+          <div class="container-fluid" >
+            <div class="navbar-header">
+              <hamburger-toggle state="tgState" class="hamburger-toggle"></hamburger-toggle>
+              <a class="navbar-brand" style="padding-left: 50%;">
+                <b>who</b>ot
+              </a>
             </div>
           </div>
         </div>
+      </div>
+
+</div>
+
+  <div class="sidenav" ng-class="{open: tgState}">
+      <ul class="nav nav-pills nav-stacked">
+        <li role="presentation" class="active"><a href="#">Open Chat</a></li>
+        <li role="presentation"><a href="#">Mafia</a></li>
+        <li role="presentation"><a href="#">Another Game?</a></li>
+      </ul>
+ </div>
+
+
+
+<div class="content" ng-class="{'sidenav-open': tgState}">
+
     <div class="chat"></div>
-  </div>
+
+
+
+</div>
+
+
 
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
@@ -60,6 +82,11 @@
     $(document).ready(function() {
       $(".chat").load("chat-room.html");
     });
+
+    angular.module('myApp', ['ngHamburger'])
+        .controller('sideBarCtrl', function($scope) {
+          $scope.tgState = false;
+        });
   </script>
 </body>
 </html>
