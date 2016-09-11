@@ -1,6 +1,6 @@
 var socket = io();
 
-var context = document.getElementById('canvas').getContext("2d");
+var context = document.getElementById("canvas").getContext("2d");
 
 var clickX = new Array();
 var clickY = new Array();
@@ -38,7 +38,7 @@ function socketSend(x, y, dragging){
 
 }
 
-$('.canvas').mousedown(function(e){
+$('#canvas').mousedown(function(e){
 
     var mouseX = e.pageX - this.offsetLeft;
     var mouseY = e.pageY - this.offsetTop;
@@ -50,18 +50,18 @@ $('.canvas').mousedown(function(e){
 
 
 
-$('.canvas').mousemove(function(e){
+$('#canvas').mousemove(function(e){
     if(paint){
         addSelfClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
         redraw();
     }
 });
 
-$('.canvas').mouseup(function(e){
+$('#canvas').mouseup(function(e){
     paint = false;
 });
 
-$('.canvas').mouseleave(function(e){
+$('#canvas').mouseleave(function(e){
     paint = false;
 });
 
